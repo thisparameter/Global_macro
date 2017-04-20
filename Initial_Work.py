@@ -34,6 +34,7 @@ def process_timeline(df):
     #break the dataframe into separate dataframes with regards to timelines
     df_dict = {}
     count_dates = [0 if x.lower().find('date')==-1 else 1 for x in list(df.columns)]
+    
     ct_df = 0
     start = 0
     start_index = 0
@@ -42,17 +43,16 @@ def process_timeline(df):
             df_dict[ct_df] = pd.DataFrame()
             start_index = i
             start = 1
-            print start_index
-        elif (dt ==1 and start == 1):
+            
+        elif dt ==1:
             df_dict[ct_df] = df.iloc[:,start_index:i]
             ct_df = ct_df + 1
             start_index = i
-            start = 0
-            print start_index, start
+            
         elif i == len(count_dates) - 1 and start == 1:
             df_dict[ct_df] = df.iloc[:,start_index:]
             start = 0
-    print df_dict.keys(), sum(count_dates)
+    
     for key in sorted(list(df_dict.keys())):
         temp_df = df_dict[key].copy()
         temp_df = temp_df.loc[temp_df.iloc[:,0].dropna().index,:]
